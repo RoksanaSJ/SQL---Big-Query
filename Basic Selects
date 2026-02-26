@@ -1,0 +1,30 @@
+#Wszystkie dni, w których średni czas oczekiwania w kolejce był większy niż 120 sekund, posortowane malejąco według średniego czasu oczekiwania.
+SELECT DateID, AvgQueueTimeSec
+FROM `linen-striker-481210-m7.Zadanie1.fact_store_day_ops`
+WHERE AvgQueueTimeSec > 120 
+ORDER BY AvgQueueTimeSec DESC
+
+#Znajdź kampanie, których nazwa zawiera słowo Local.
+SELECT * 
+FROM linen-striker-481210-m7.Zadanie1.dim_campaign
+WHERE CampaignName LIKE '%Local%'
+
+#Wyświetl kawiarnie, których 'country' to 'CZ"
+SELECT *
+FROM linen-striker-481210-m7.Zadanie1.dim_store
+WHERE Country LIKE 'CZ'
+
+#Pokaż rekordy z tabeli faktów, gdzie nie ma kampanii (CampaignID jest NULL). - jesli nie ma takich to prosze tylko o kod 
+SELECT *
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops
+WHERE CampaignID IS NULL
+
+#Znajdź kampanie, których nazwa nie zawiera słowa „Student”.
+SELECT *
+FROM linen-striker-481210-m7.Zadanie1.dim_campaign
+WHERE CampaignName NOT LIKE '%Student%'
+
+#Pokaż dni z tabeli faktów, gdzie na zmianie bylo wiecej niz 5 pracownikow
+SELECT DateID, StaffOnShiftCount
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops
+WHERE StaffOnShiftCount > 5
