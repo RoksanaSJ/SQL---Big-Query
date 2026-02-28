@@ -25,3 +25,11 @@ SELECT CustomerID, Count(OrderID) AS OrdersCount, SUM(TotalAmount)TotalSum
 FROM shop-online-482614.Shop_Online.Orders
 GROUP BY CustomerID
 HAVING OrdersCount > 5 AND TotalSum > 2000
+
+--Find products that generated a total of more than 5000 in sales.
+SELECT p.ProductID, ROUND(SUM(TotalAmount),2) AS SumAmount
+FROM shop-online-482614.Shop_Online.Products p
+LEFT JOIN shop-online-482614.Shop_Online.Orders o
+ON p.ProductID = o.ProductID
+GROUP BY ProductID
+HAVING ROUND(SUM(TotalAmount),2) > 5000
