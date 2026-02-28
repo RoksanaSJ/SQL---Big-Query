@@ -1,0 +1,27 @@
+--Count the number of orders for each customer in the Orders table.
+SELECT CustomerID, COUNT(*) OrderPerCustomer
+FROM shop-online-482614.Shop_Online.Orders
+GROUP BY CustomerID
+
+--Calculate the total order value handled by each warehouse in the Orders table.
+SELECT WarehouseID, ROUND(SUM(TotalAmount),2) AS TotalAmountPerWarehouse
+FROM shop-online-482614.Shop_Online.Orders
+GROUP BY WarehouseID
+
+--Average order value by product category. In the Orders and Products tables, calculate the average order value for each product category.
+SELECT Category, ROUND(AVG(TotalAmount),2) AS AvgAmount
+FROM shop-online-482614.Shop_Online.Orders o
+LEFT JOIN shop-online-482614.Shop_Online.Products p
+ON o.ProductID = p.ProductID
+GROUP BY Category
+
+--Number of products in warehouses. In the Inventory table, count the number of distinct products stored in each warehouse.
+SELECT WarehouseID, Count(DISTINCT ProductID) AS ProductCount
+FROM shop-online-482614.Shop_Online.Inventory
+GROUP BY WarehouseID
+
+--In the Orders table, find customers who have placed more than 5 orders with a total value exceeding 2000.
+SELECT CustomerID, Count(OrderID) AS OrdersCount, SUM(TotalAmount)TotalSum
+FROM shop-online-482614.Shop_Online.Orders
+GROUP BY CustomerID
+HAVING OrdersCount > 5 AND TotalSum > 2000
