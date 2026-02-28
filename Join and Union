@@ -1,0 +1,40 @@
+--Join the fact_store and dim_weather tables to display the weather description, average wait time, average order preparation time, storeid, and date.
+SELECT Condition, AvgQueueTimeSec, AvgPrepTimeSec, StoreID, DateID
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops f
+LEFT JOIN linen-striker-481210-m7.Zadanie1.dim_weather w
+ON f.WeatherID = w.WeatherID
+
+--Join the data from the fact_store and dim_coffee_batch tables; display all columns from the fact table and additionally the information about the coffee's country of origin.
+SELECT *, OriginCountry
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops f
+LEFT JOIN linen-striker-481210-m7.Zadanie1.dim_coffee_batch c
+ON f.CoffeeBatchID = c.CoffeeBatchID
+
+--Join the fact_store and dim_equipment tables. Display the columns storeid, equipmentid, service_intervaldays, milk_waste, and average_wait_time. Calculate the date of the last service and the difference between the last service date and the report date (current_date)
+SELECT StoreID, f.EquipmentID, ServiceIntervalDays, MilkWaste_ml, AvgQueueTimeSec, DATE_SUB(CURRENT_DATE(), INTERVAL ServiceIntervalDays DAY) AS LastServiceDate,
+DATE_DIFF(CURRENT_DATE(), DATE_SUB(CURRENT_DATE(), INTERVAL ServiceIntervalDays DAY), DAY) AS DaysSinceLastService
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops f
+LEFT JOIN linen-striker-481210-m7.Zadanie1.dim_equipment e
+ON f.EquipmentID = e.EquipmentID
+
+--Combine the data from previous years (2023 and 2024) with the 2025 fact table (copy all columns): FactID, StoreID, DateID, ShiftID, WeatherID, EquipmentID, CoffeeBatchID, CampaignID, FootfallCount, StaffOnShiftCount, AvgQueueTimeSec, AvgPrepTimeSec, EspressoExtractionTimeSec, EspressoTDS_Pct, MilkWaste_ml, CoffeeWaste_g, EnergyConsumption_kWh, WaterUsage_L, Satisfaction_1_10, ComplaintsCount, HACCP_AuditScore
+SELECT FactID, StoreID, DateID, ShiftID, WeatherID, EquipmentID, CoffeeBatchID, CampaignID, FootfallCount,
+StaffOnShiftCount,
+AvgQueueTimeSec, AvgPrepTimeSec, EspressoExtractionTimeSec, EspressoTDS_Pct, MilkWaste_ml,
+CoffeeWaste_g, EnergyConsumption_kWh,
+WaterUsage_L, Satisfaction_1_10, ComplaintsCount, HACCP_AuditScore
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops
+UNION ALL
+SELECT FactID, StoreID, DateID, ShiftID, WeatherID, EquipmentID, CoffeeBatchID, CampaignID, FootfallCount,
+StaffOnShiftCount,
+AvgQueueTimeSec, AvgPrepTimeSec, EspressoExtractionTimeSec, EspressoTDS_Pct, MilkWaste_ml,
+CoffeeWaste_g, EnergyConsumption_kWh,
+WaterUsage_L, Satisfaction_1_10, ComplaintsCount, HACCP_AuditScore
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops_2023
+UNION ALL
+SELECT FactID, StoreID, DateID, ShiftID, WeatherID, EquipmentID, CoffeeBatchID, CampaignID, FootfallCount,
+StaffOnShiftCount,
+AvgQueueTimeSec, AvgPrepTimeSec, EspressoExtractionTimeSec, EspressoTDS_Pct, MilkWaste_ml,
+CoffeeWaste_g, EnergyConsumption_kWh,
+WaterUsage_L, Satisfaction_1_10, ComplaintsCount, HACCP_AuditScore
+FROM linen-striker-481210-m7.Zadanie1.fact_store_day_ops_2024
